@@ -9,6 +9,7 @@ import {
   Editable,
   EditableTextarea,
   EditablePreview,
+  Select,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 
@@ -19,6 +20,10 @@ function App() {
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
+            <Select placeholder="Select text example">
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+            </Select>
             <Text>
               this is a simple paragraph that is meant to be nice and easy to
               type which is why there will be mommas no periods or any capital
