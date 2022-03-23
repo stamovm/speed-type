@@ -20,14 +20,48 @@ import {
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { texts } from './data.js';
 
+function createTimer(func, interval = 1000) {
+  let running = false;
+  let timerID = 0;
+  let int = interval;
+  return {
+    isRunning: function () {
+      return running;
+    },
+    getInterval: function () {
+      return int;
+    },
+    setInterval: function (interval) {
+      int = interval;
+    },
+    start: function () {
+      if (running) return;
+      running = true;
+      timerID = setInterval(func, int);
+    },
+    stop: function () {
+      clearInterval(timerID);
+      running = false;
+    },
+  };
+}
+
 function App() {
   const [selected, setSelected] = useState(0);
   const [sampleTxt, setSampleTxt] = useState(texts[selected]['txt']);
   const [time, setTime] = useState(0);
   const [wpm, setWpm] = useState(0);
+  let currentTime = 0;
+
+  function timerUpdate() {
+    currentTime++;
+    setTime(currentTime);
+  }
+  let timer = createTimer(timerUpdate);
 
   function textChanged(txt) {
-    console.log(txt);
+    if (txt.length > 0) timer.start();
+    console.log(timer.isRunning());
   }
 
   return (
