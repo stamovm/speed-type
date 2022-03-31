@@ -46,12 +46,13 @@ function createTimer(func, interval = 1000) {
   };
 }
 
+let currentTime = 0;
+
 function App() {
   const [selected, setSelected] = useState(0);
   const [sampleTxt, setSampleTxt] = useState(texts[selected]['txt']);
   const [time, setTime] = useState(0);
   const [wpm, setWpm] = useState(0);
-  let currentTime = 0;
 
   function timerUpdate() {
     currentTime++;
