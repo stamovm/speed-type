@@ -19,34 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { texts } from './data.js';
-
-function createTimer(func, interval = 1000) {
-  let running = false;
-  let timerID = 0;
-  let int = interval;
-  return {
-    isRunning: function () {
-      return running;
-    },
-    getInterval: function () {
-      return int;
-    },
-    setInterval: function (interval) {
-      int = interval;
-    },
-    start: function () {
-      if (running) return;
-      running = true;
-      timerID = setInterval(func, int);
-    },
-    stop: function () {
-      clearInterval(timerID);
-      running = false;
-    },
-  };
-}
-
-let currentTime = 0;
+import useTimer from './hooks/useTimer';
 
 function App() {
   const [selected, setSelected] = useState(0);
@@ -54,15 +27,19 @@ function App() {
   const [time, setTime] = useState(0);
   const [wpm, setWpm] = useState(0);
 
-  function timerUpdate() {
-    currentTime++;
-    setTime(currentTime);
-  }
-  let timer = createTimer(timerUpdate);
+  const {
+    timer,
+    isActive,
+    isPaused,
+    handleStart,
+    handlePause,
+    handleResume,
+    handleReset,
+  } = useTimer(0);
 
   function textChanged(txt) {
-    if (txt.length > 0) timer.start();
-    console.log(timer.isRunning());
+    // if (txt.length > 0) timer.start();
+    // console.log(timer.isRunning());
   }
 
   return (
