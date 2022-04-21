@@ -3,7 +3,7 @@ export const texts = [
     id: 0,
     name: 'sample 1 Difficulty: 0.8',
     txt: `this is a simple paragraph that is meant to be nice and easy to
-        type which is why there will be mommas no periods or any capital
+        type which is why there will be no periods or any capital
         letters so i guess this means that it cannot really be considered
         a paragraph but just a series of run on sentences this should help
         you get faster at typing as im trying not to use too many

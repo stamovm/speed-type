@@ -6,7 +6,8 @@ const useTimer = (initialState = 0) => {
   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef(null);
 
-  const handleStart = () => {
+  const timerStart = () => {
+    if (isActive || isPaused) return;
     setIsActive(true);
     setIsPaused(true);
     countRef.current = setInterval(() => {
@@ -14,33 +15,44 @@ const useTimer = (initialState = 0) => {
     }, 1000);
   };
 
-  const handlePause = () => {
+  const timerPause = () => {
     clearInterval(countRef.current);
     setIsPaused(false);
   };
 
-  const handleResume = () => {
+  const timerResume = () => {
     setIsPaused(true);
     countRef.current = setInterval(() => {
       setTimer(timer => timer + 1);
     }, 1000);
   };
 
-  const handleReset = () => {
+  const timerReset = () => {
     clearInterval(countRef.current);
     setIsActive(false);
     setIsPaused(false);
     setTimer(0);
   };
 
+  const formatTime = () => {
+    const getSeconds = `0${timer % 60}`.slice(-2);
+    const minutes = `${Math.floor(timer / 60)}`;
+    const getMinutes = `0${minutes % 60}`.slice(-2);
+    const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
+    if (getHours === '00') {
+      return `${getMinutes}:${getSeconds}`;
+    } else return `${getHours}:${getMinutes}:${getSeconds}`;
+  };
+
   return {
     timer,
     isActive,
     isPaused,
-    handleStart,
-    handlePause,
-    handleResume,
-    handleReset,
+    timerStart,
+    timerPause,
+    timerResume,
+    timerReset,
+    formatTime,
   };
 };
 

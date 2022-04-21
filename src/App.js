@@ -13,10 +13,13 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  StatArrow,
   StatGroup,
+  ColorModeScript,
+  Progress,
+  Stack,
+  Button,
 } from '@chakra-ui/react';
+
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { texts } from './data.js';
 import useTimer from './hooks/useTimer';
@@ -24,26 +27,38 @@ import useTimer from './hooks/useTimer';
 function App() {
   const [selected, setSelected] = useState(0);
   const [sampleTxt, setSampleTxt] = useState(texts[selected]['txt']);
-  const [time, setTime] = useState(0);
   const [wpm, setWpm] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  const {
-    timer,
-    isActive,
-    isPaused,
-    handleStart,
-    handlePause,
-    handleResume,
-    handleReset,
-  } = useTimer(0);
+  const t1 = useTimer(0);
+
+  function countWords(words) {
+    //todo: fix empty space counting
+    let count = 0;
+    for (let i = 0; i < words.length; i++) {
+      if (words[i] === ' ') {
+        count++;
+      }
+    }
+    return count;
+  }
 
   function textChanged(txt) {
-    // if (txt.length > 0) timer.start();
-    // console.log(timer.isRunning());
+    if (txt.length > 0) {
+      t1.timerStart();
+    } else {
+      t1.timerPause();
+    }
+    console.log('count: ', (countWords(txt) / countWords(sampleTxt)) * 100);
+    let currentWpm = 0;
+    currentWpm = Math.round(countWords(txt) / (t1.timer / 60));
+    setWpm(currentWpm);
+    setProgress((countWords(txt) / countWords(sampleTxt)) * 100);
   }
 
   return (
     <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Box fontSize="xl">
         <Grid minH="100vh" p={3}>
           <VStack spacing={5}>
@@ -51,23 +66,16 @@ function App() {
               <StatGroup>
                 <Stat>
                   <StatLabel>Time</StatLabel>
-                  <StatNumber>{time}</StatNumber>
-                  <StatHelpText>
-                    <StatArrow type="increase" />
-                    0.0%
-                  </StatHelpText>
+                  <StatNumber>{t1.formatTime()}</StatNumber>
                 </Stat>
 
                 <Stat>
                   <StatLabel>WPM</StatLabel>
                   <StatNumber>{wpm}</StatNumber>
-                  <StatHelpText>
-                    <StatArrow type="decrease" />
-                    0.0%
-                  </StatHelpText>
                 </Stat>
-                <ColorModeSwitcher joustifySelf="flex-end" />
+                <ColorModeSwitcher />
               </StatGroup>
+              <Progress value={progress} />
             </Box>
             <Select
               onChange={e => {
@@ -92,6 +100,12 @@ function App() {
               <EditablePreview />
               <EditableTextarea />
             </Editable>
+            <Stack direction="row" spacing={4} align="left" bgcolor="grey">
+              <Button variant="solid">Start</Button>
+              <Button variant="solid">Pause</Button>
+              <Button variant="solid">Resume</Button>
+              <Button variant="solid">Reset</Button>
+            </Stack>
           </VStack>
         </Grid>
       </Box>
