@@ -33,14 +33,9 @@ function App() {
   const t1 = useTimer(0);
 
   function countWords(words) {
-    //todo: fix empty space counting
-    let count = 0;
-    for (let i = 0; i < words.length; i++) {
-      if (words[i] === ' ') {
-        count++;
-      }
-    }
-    return count;
+    //todo: test the new implementation
+    const arr = words.split(' ');
+    return arr.filter(word => word !== '').length;
   }
 
   function textChanged(txt) {
@@ -92,6 +87,7 @@ function App() {
             <Text className="text-sample">{sampleTxt}</Text>
             <Editable
               minW="100%"
+              startWithEditView={true}
               placeholder="Start typing here"
               onChange={txt => {
                 textChanged(txt);
