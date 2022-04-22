@@ -51,6 +51,22 @@ function App() {
     setProgress((countWords(txt) / countWords(sampleTxt)) * 100);
   }
 
+  function handleStart() {
+    t1.timerStart();
+  }
+
+  function handlePause() {
+    t1.timerPause();
+  }
+
+  function handleResume() {
+    t1.timerResume();
+  }
+
+  function handleReset() {
+    t1.timerReset();
+  }
+
   return (
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -97,10 +113,34 @@ function App() {
               <EditableTextarea />
             </Editable>
             <Stack direction="row" spacing={4} align="left" bgcolor="grey">
-              <Button variant="solid">Start</Button>
-              <Button variant="solid">Pause</Button>
-              <Button variant="solid">Resume</Button>
-              <Button variant="solid">Reset</Button>
+              <Button
+                variant="solid"
+                isDisabled={t1.isActive}
+                onClick={() => handleStart()}
+              >
+                Start
+              </Button>
+              <Button
+                variant="solid"
+                isDisabled={t1.isPaused && t1.isActive}
+                onClick={() => handlePause()}
+              >
+                Pause
+              </Button>
+              <Button
+                variant="solid"
+                isDisabled={!t1.isPaused}
+                onClick={() => handleResume()}
+              >
+                Resume
+              </Button>
+              <Button
+                variant="solid"
+                isDisabled={t1.timer === 0}
+                onClick={() => handleReset()}
+              >
+                Reset
+              </Button>
             </Stack>
           </VStack>
         </Grid>
