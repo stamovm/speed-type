@@ -122,14 +122,14 @@ function App() {
               </Button>
               <Button
                 variant="solid"
-                isDisabled={t1.isPaused && t1.isActive}
+                isDisabled={t1.isPaused || !t1.isActive}
                 onClick={() => handlePause()}
               >
                 Pause
               </Button>
               <Button
                 variant="solid"
-                isDisabled={!t1.isPaused}
+                isDisabled={!t1.isPaused || !t1.isActive}
                 onClick={() => handleResume()}
               >
                 Resume

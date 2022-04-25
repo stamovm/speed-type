@@ -5,14 +5,15 @@ const useTimer = (initialState = 0) => {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
   const countRef = useRef(null);
+  const TIMER_INTERVAL = 1000; //one second
 
   const timerStart = () => {
-    if (isActive || isPaused) return;
+    if (isActive) return;
     setIsActive(true);
     setIsPaused(false);
     countRef.current = setInterval(() => {
       setTimer(timer => timer + 1);
-    }, 1000);
+    }, TIMER_INTERVAL);
   };
 
   const timerPause = () => {
@@ -21,14 +22,15 @@ const useTimer = (initialState = 0) => {
   };
 
   const timerResume = () => {
-    if (!isPaused) return;
+    if (!isPaused || !isActive) return;
     setIsPaused(false);
     countRef.current = setInterval(() => {
       setTimer(timer => timer + 1);
-    }, 1000);
+    }, TIMER_INTERVAL);
   };
 
   const timerReset = () => {
+    if (!isActive) return;
     clearInterval(countRef.current);
     setIsActive(false);
     setIsPaused(false);
