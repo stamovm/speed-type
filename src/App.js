@@ -85,6 +85,7 @@ function App() {
   function handleReset() {
     t1.timerReset();
     setWpm(0);
+    setMarkedTxt(sampleTxt);
     inputEl.current.value = '';
   }
 
@@ -108,20 +109,7 @@ function App() {
                   <StatLabel>Errors</StatLabel>
                   <StatNumber>{errors}</StatNumber>
                 </Stat>
-                <Select
-                  maxW="14rem"
-                  onChange={e => {
-                    setSelected(e.target.value);
-                    setSampleTxt(texts[e.target.value]['txt']);
-                    setMarkedTxt(texts[e.target.value]['txt']);
-                  }}
-                >
-                  {texts.map(text => (
-                    <option key={text.id} value={text.id}>
-                      {text.name}
-                    </option>
-                  ))}
-                </Select>
+
                 <ColorModeSwitcher />
               </StatGroup>
               <Progress value={progress} />
@@ -172,6 +160,20 @@ function App() {
               >
                 Reset
               </Button>
+              <Select
+                maxW="14rem"
+                onChange={e => {
+                  setSelected(e.target.value);
+                  setSampleTxt(texts[e.target.value]['txt']);
+                  setMarkedTxt(texts[e.target.value]['txt']);
+                }}
+              >
+                {texts.map(text => (
+                  <option key={text.id} value={text.id}>
+                    {text.name}
+                  </option>
+                ))}
+              </Select>
             </Stack>
           </VStack>
         </Grid>
