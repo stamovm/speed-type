@@ -53,7 +53,6 @@ function App() {
         }
       }
     }
-    console.log('--', words);
     setErrors(errCount);
     setMarkedTxt(tmpTxt);
   }
@@ -85,6 +84,7 @@ function App() {
   function handleReset() {
     t1.timerReset();
     setWpm(0);
+    setErrors(0);
     setMarkedTxt(sampleTxt);
     inputEl.current.value = '';
   }
